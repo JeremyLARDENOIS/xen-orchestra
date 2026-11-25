@@ -106,7 +106,8 @@ export const locales: Locales = {
 export const FALLBACK_LOCALE = 'en'
 
 export default createI18n({
-  locale: localStorage.getItem('lang') ?? 'en',
+  // `localStorage` does not exist outside a browser, e.g. in the unit tests, which run without a DOM
+  locale: globalThis.localStorage?.getItem('lang') ?? FALLBACK_LOCALE,
   fallbackLocale: FALLBACK_LOCALE,
   messages,
   missing: (locale, key, vm) => {
