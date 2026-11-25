@@ -11,6 +11,9 @@
     "type-check": "vue-tsc --build --force",
     "prepublishOnly": "yarn run build-only",
     "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:related": "vitest related --run --passWithNoTests",
     "test:ui": "vitest --ui"
   },
   "devDependencies": {

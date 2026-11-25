@@ -11,6 +11,8 @@
   "exclude": [
     "./src/**/*.unit.test.ts",
     "./src/**/*.unit.spec.ts",
+    "./src/**/*.integration.test.ts",
+    "./src/**/*.integration.spec.ts",
     "./src/test/**",
     "../web-core/lib/**/*.unit.test.ts",
     "../web-core/lib/**/*.unit.spec.ts"

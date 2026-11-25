@@ -46,7 +46,6 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       globals: true,
-      setupFiles: ['./src/test/setup.ts'],
       // Each test file runs in its own VM context inside a reused process, so dependencies (happy-dom, Vue…) are not
       // loaded again for every file. Workers are recycled above `vmMemoryLimit`, as VM contexts make the memory grow.
       pool: 'vmForks',
@@ -56,12 +55,24 @@ export default defineConfig(({ mode }) => {
         'placement.js': fileURLToPath(new URL('../../node_modules/placement.js/dist/index.es.js', import.meta.url)),
       },
       projects: [
+        // Code called directly, without a DOM: utilities and composables that need no mounted component
         {
           extends: true,
           test: {
             include: ['**/*.unit.{test,spec}.ts'],
             name: 'unit',
+            environment: 'node',
+            setupFiles: ['./src/test/setup.ts'],
+          },
+        },
+        // Code mounted in a DOM with its real dependencies: components, and composables mounted in a component
+        {
+          extends: true,
+          test: {
+            include: ['**/*.integration.{test,spec}.ts'],
+            name: 'integration',
             environment: 'happy-dom',
+            setupFiles: ['./src/test/setup.ts', './src/test/setup-dom.ts'],
           },
         },
       ],

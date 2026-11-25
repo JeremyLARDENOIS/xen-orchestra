@@ -1,6 +1,6 @@
 # Testing components
 
-Components run in the same `unit` project as everything else: `@vue/test-utils` `mount` on `happy-dom`, **no browser needed**. Mount with `createGlobalTestConfig()` so the real `vue-i18n` instance, the app form validation messages (`RegleVuePlugin` with `formValidationConfig`, as in `main.ts`) and a fresh Pinia are installed, and give the repeated mount a helper (see [Setup](./setup-helpers.md)):
+Components run in the `integration` project: `@vue/test-utils` `mount` on `happy-dom`, **no browser needed**. Mount with `createGlobalTestConfig()` so the real `vue-i18n` instance, the app form validation messages (`RegleVuePlugin` with `formValidationConfig`, as in `main.ts`) and a fresh Pinia are installed, and give the repeated mount a helper (see [Setup](./setup-helpers.md)):
 
 ```typescript
 import VmSystemGraphics from '@/modules/vm/components/system/VmSystemGraphics.vue'
@@ -23,7 +23,7 @@ it('shows VGA as enabled when the VM uses the "std" adapter', () => {
 })
 ```
 
-The test file sits next to the component, named `<ComponentName>.unit.test.ts` (no `.vue`). Group with `describe` only when the component has several distinct behaviors to separate; a small component reads better as flat `it`s.
+The test file sits next to the component, named `<ComponentName>.integration.test.ts` (no `.vue`). Group with `describe` only when the component has several distinct behaviors to separate; a small component reads better as flat `it`s.
 
 ## Keep components thin
 
@@ -190,7 +190,7 @@ it('formats the plotted values as bytes', () => {
 })
 ```
 
-Keep it to one representative value: how the formatter handles the whole range, `null` included, belongs to the formatter's own test — `chart-stats.util.unit.test.ts` for `formatChartBytes`, `chart-percent-formatter.composable.unit.test.ts` for `useChartPercentFormatter`.
+Keep it to one representative value: how the formatter handles the whole range, `null` included, belongs to the formatter's own test — `chart-stats.util.unit.test.ts` for `formatChartBytes`, `chart-percent-formatter.composable.integration.test.ts` for `useChartPercentFormatter`.
 
 ## Legend cards
 

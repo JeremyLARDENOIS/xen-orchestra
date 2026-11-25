@@ -1,6 +1,6 @@
 # Testing
 
-This guide documents the unit-testing conventions used in `@xen-orchestra/web`, as established across the `pool`, `host` and `vm` modules. Follow it when adding tests for a new module, composable, utility or component.
+This guide documents the testing conventions used in `@xen-orchestra/web`, as established across the `pool`, `host` and `vm` modules. Follow it when adding tests for a new module, composable, utility or component.
 
 **Start with [Assert behavior, not implementation](./tests/assert-behavior.md)** — it is the rule the rest of this guide serves.
 

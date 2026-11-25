@@ -2,10 +2,10 @@
 
 ## File layout and naming
 
-- A test file lives **next to** the file it covers, named `<source-name>.unit.test.ts`.
-  - `xo-host.util.ts` → `xo-host.util.unit.test.ts`
-  - `use-pool-enhanced-data.composable.ts` → `use-pool-enhanced-data.composable.unit.test.ts`
-  - `VmSystemGraphics.vue` → `VmSystemGraphics.unit.test.ts` (the `.vue` is dropped)
+- A test file lives **next to** the file it covers, named after it, with the suffix of its [project](./running-tests.md):
+  - `.unit.test.ts` when it calls the code directly, without a DOM: `xo-host.util.ts` → `xo-host.util.unit.test.ts`
+  - `.integration.test.ts` when it mounts the code: `VmSystemGraphics.vue` → `VmSystemGraphics.integration.test.ts` (the `.vue` is dropped)
+  - a composable goes to either, depending on whether it needs a component instance (see [Testing composables](./testing-composables.md))
 - Shared test data **factories** and helpers live in `src/test/`.
 
 ## Structuring a test file
@@ -38,7 +38,7 @@ Those types are declared in `tsconfig.vitest.json`, not in `tsconfig.app.json`, 
 
 The two projects split on the file name:
 
-| Project                | Covers                                                 | Test globals |
-| ---------------------- | ------------------------------------------------------ | ------------ |
-| `tsconfig.app.json`    | everything **except** `*.unit.test.ts` and `src/test/` | no           |
-| `tsconfig.vitest.json` | everything, tests included                             | yes          |
+| Project                | Covers                                          | Test globals |
+| ---------------------- | ----------------------------------------------- | ------------ |
+| `tsconfig.app.json`    | everything **except** the tests and `src/test/` | no           |
+| `tsconfig.vitest.json` | everything, tests included                      | yes          |

@@ -1,7 +1,5 @@
-import { enableAutoUnmount } from '@vue/test-utils'
-
 // Composables that rely on remote resources (e.g. `useXoRoutes`) call `fetch`
-// as soon as they are used. In unit tests we never want to hit the network, so
+// as soon as they are used. In tests we never want to hit the network, so
 // `fetch` is stubbed with a never-settling promise: the request simply stays
 // pending for the lifetime of the test. Tests that need a real response can
 // override this stub locally with `vi.stubGlobal('fetch', …)` (see
@@ -13,10 +11,3 @@ beforeEach(() => {
     vi.fn(() => new Promise(() => {}))
   )
 })
-
-// happy-dom keeps the local storage across the tests of a file: each test starts with an empty one
-beforeEach(() => {
-  localStorage.clear()
-})
-
-enableAutoUnmount(afterEach)

@@ -1,6 +1,25 @@
 # Testing composables
 
-A composable that relies on a Vue context (`useI18n`, `inject`, an effect scope, plugins) must run **inside a mounted component**. Use the helpers from `src/test/mount-composable.ts`, which mount a throwaway component with `createGlobalTestConfig()`: the real `vue-i18n` instance, the app form validation messages, a fresh Pinia and a router.
+## Without a component: `runComposable`
+
+A composable built on `computed`, `watch` and `ref`, and on collections the test mocks, needs no component: `runComposable` from `src/test/run-composable.ts` runs it in an effect scope, and the test is a `unit` one (`*.unit.test.ts`, no DOM). The result is returned as is, so its refs are read through `.value`, and the scope is stopped once the test is finished:
+
+```typescript
+import { runComposable } from '@/test/run-composable.ts'
+
+const br = ref(createBr({ url: 'nfs://192.168.100.225:/media/nfs' }))
+const parsedUrl = runComposable(() => useXoBackupRepositoryParsedUrl(br))
+
+br.value = createBr({ url: 's3://key:secret@s3.us-west-1.amazonaws.com/my-bucket/backups' })
+
+expect(parsedUrl.value?.type).toBe('s3')
+```
+
+Prefer it whenever the composable allows: no DOM, no mounted component, so the test runs much faster.
+
+## In a mounted component: `mountComposable`
+
+A composable that relies on a Vue context (`useI18n`, `inject`, an effect scope, plugins) must run **inside a mounted component**. Its test is an `integration` one (`*.integration.test.ts`). Use the helpers from `src/test/mount-composable.ts`, which mount a throwaway component with `createGlobalTestConfig()`: the real `vue-i18n` instance, the app form validation messages, a fresh Pinia and a router.
 
 Because the real i18n instance is installed, translations resolve to actual strings, and the assertion builds its expected label with `t` instead of hard-coding the wording — see [Assert behavior](./assert-behavior.md). `mountComposableWithI18n` mounts the composable, spreads its result, adds the `t` of the mounted component and returns `wrapper.vm`:
 
