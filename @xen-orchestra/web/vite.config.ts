@@ -47,6 +47,10 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true,
       setupFiles: ['./src/test/setup.ts'],
+      // Each test file runs in its own VM context inside a reused process, so dependencies (happy-dom, Vue…) are not
+      // loaded again for every file. Workers are recycled above `vmMemoryLimit`, as VM contexts make the memory grow.
+      pool: 'vmForks',
+      vmMemoryLimit: '300MB',
       alias: {
         // `placement.js` only declares a `module` entry, which the Node-style resolution used by Vitest ignores
         'placement.js': fileURLToPath(new URL('../../node_modules/placement.js/dist/index.es.js', import.meta.url)),
