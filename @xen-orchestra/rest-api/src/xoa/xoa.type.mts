@@ -106,3 +106,8 @@ export type XoGuiRoutes = {
   xo5?: string
   xo6?: string
 }
+
+export type XoGuiExtensions = {
+  xo5: string[]
+  xo6: string[]
+}

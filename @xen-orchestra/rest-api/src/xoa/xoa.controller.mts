@@ -4,8 +4,9 @@ import { PassThrough } from 'node:stream'
 import { provide } from 'inversify-binding-decorators'
 import type { Request as ExRequest, Response as ExResponse } from 'express'
 
-import type { PingResponse, XoaDashboard, XoGuiRoutes } from './xoa.type.mjs'
+import type { PingResponse, XoaDashboard, XoGuiExtensions, XoGuiRoutes } from './xoa.type.mjs'
 
+import { guiExtensions } from '../open-api/oa-examples/gui-extensions.oa-example.mjs'
 import { guiRoutes } from '../open-api/oa-examples/gui-routes.oa-example.mjs'
 import { pingResponse } from '../open-api/oa-examples/ping.oa-example.mjs'
 import { badRequestResp, unauthorizedResp } from '../open-api/common/response.common.mjs'
@@ -73,5 +74,18 @@ export class XoaController extends Controller {
       xo5: v5?.url,
       xo6: v6?.url,
     }
+  }
+
+  /**
+   * URLs of the scripts registered by plugins to extend each web UI, loaded by the UI at startup.
+   *
+   * Available to any authenticated user, since every user loads the UI.
+   */
+  @Security('*', ['acl'])
+  @Example(guiExtensions)
+  @Get('gui-extensions')
+  @Response(unauthorizedResp.status, unauthorizedResp.description)
+  getGuiExtensions(): XoGuiExtensions {
+    return this.#restApi.xoApp.getGuiExtensions()
   }
 }

@@ -293,6 +293,12 @@ export type XoApp = EventEmitter & {
     }
   ) => () => void // eslint-disable-line @typescript-eslint/no-explicit-any
   registerRestRoutes: (routes: PluginRestRouteDefinition[], base?: string) => () => void
+  /**
+   * Make a web UI load a script (served by XO) at startup, before rendering.
+   *
+   * Returns a function to unregister it.
+   */
+  registerGuiExtension: (gui: 'xo5' | 'xo6', url: string) => () => void
   authenticateUser: (
     credentials: { token?: string; username?: string; password?: string },
     userData?: { ip?: string },
@@ -447,10 +453,7 @@ export type XoApp = EventEmitter & {
    * `assertBrowserMediaInsertable` reports the predictable failures synchronously, e.g. before
    * starting a task.
    */
-  insertBrowserMedia(params: {
-    id: XoBrowserMediaSession['id']
-    vmId: XoVm['id']
-  }): Promise<{ vdiId: XoVdi['id'] }>
+  insertBrowserMedia(params: { id: XoBrowserMediaSession['id']; vmId: XoVm['id'] }): Promise<{ vdiId: XoVdi['id'] }>
   assertBrowserMediaInsertable(params: { id: XoBrowserMediaSession['id']; vmId: XoVm['id'] }): void
   /** Eject the ISO of a browser media session, release its storage, and disconnect the browser */
   ejectBrowserMedia(id: XoBrowserMediaSession['id']): Promise<void>
@@ -477,6 +480,8 @@ export type XoApp = EventEmitter & {
     limit?: number
   }): Promise<AnyXoLog[]>
   getGroup(id: XoGroup['id']): Promise<XoGroup>
+  /** URLs of the scripts registered by plugins to extend each web UI, in registration order */
+  getGuiExtensions(): { xo5: string[]; xo6: string[] }
   getHVSupportedVersions: undefined | (() => Promise<{ [key: XoHost['productBrand']]: string }>)
   getJob<T extends AnyXoJob>(id: T['id']): Promise<T>
   isJobSequence(job: AnyXoJob): boolean

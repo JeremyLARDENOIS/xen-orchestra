@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "xo-server-test-gui-extensions",
+  "version": "0.0.0",
+  "description": "Test plugin extending xo-server, XO 5 and XO 6 at once",
+  "homepage": "https://github.com/vatesfr/xen-orchestra/tree/master/packages/xo-server-test-gui-extensions",
+  "bugs": "https://github.com/vatesfr/xen-orchestra/issues",
+  "repository": {
+    "directory": "packages/xo-server-test-gui-extensions",
+    "type": "git",
+    "url": "https://github.com/vatesfr/xen-orchestra.git"
+  },
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Vates SAS",
+    "url": "https://vates.fr"
+  }
+}

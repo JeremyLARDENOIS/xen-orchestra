@@ -7,18 +7,21 @@ import store from 'store'
 import { Provider } from 'react-redux'
 import { render } from 'react-dom'
 
+import loadGuiExtensions from './gui-extensions'
 import XoApp from './xo-app'
 
-render(
-  <Provider store={store}>
-    <Router
-      history={hashHistory}
-      routes={{
-        ...XoApp.route,
-        component: XoApp,
-        path: '/',
-      }}
-    />
-  </Provider>,
-  document.getElementById('xo-app')
+const routes = {
+  ...XoApp.route,
+  component: XoApp,
+  path: '/',
+}
+
+// before rendering, so that routes added by extensions can be reached from a direct link
+loadGuiExtensions({ history: hashHistory, routes, store }).then(() =>
+  render(
+    <Provider store={store}>
+      <Router history={hashHistory} routes={routes} />
+    </Provider>,
+    document.getElementById('xo-app')
+  )
 )

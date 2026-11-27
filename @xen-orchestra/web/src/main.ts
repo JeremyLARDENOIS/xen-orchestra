@@ -1,5 +1,6 @@
 import { formValidationConfig } from '@/plugins/form-validation.config.ts'
 import { IS_XOA_BUILD } from '@/shared/constants.ts'
+import { loadGuiExtensions } from '@/shared/utils/gui-extensions.util.ts'
 import i18n from '@core/i18n.ts'
 import { useOverlayStore } from '@core/packages/overlay/use-overlay-store.ts'
 import { RegleVuePlugin } from '@regle/core'
@@ -47,10 +48,17 @@ async function init() {
     handleHotUpdate(router)
   }
 
+  const pinia = createPinia()
+
   app.use(i18n)
-  app.use(createPinia())
-  app.use(router)
+  app.use(pinia)
   app.use(RegleVuePlugin, formValidationConfig)
+
+  // before installing the router, which triggers the initial navigation, so that routes added by extensions can be
+  // reached from a direct link
+  await loadGuiExtensions({ app, i18n, pinia, router })
+
+  app.use(router)
 
   try {
     await router.isReady()
